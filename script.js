@@ -13,7 +13,7 @@ if (localStorage.getItem("allTask")) {
     for (let i = 0; i < taskArr.length; i++) {
         let { task, id , completed } = taskArr[i];
         if(completed==false)
-        createTask(task , id, completed);
+        createTask(task , id);
     }
 }
 
@@ -23,11 +23,11 @@ if (localStorage.getItem("allTask")) {
 
 addBtn.addEventListener("click",function(){
 
-    let numOfTasks = document.querySelectorAll(".task");
+    let numOfTasks = taskArr.length;
     let lastNum;
-    if(numOfTasks.length >= 1)
+    if(numOfTasks >= 1)
     {
-        lastNum = numOfTasks[numOfTasks.length-1].getAttribute("num");
+        lastNum = taskArr[numOfTasks-1].id;
         lastNum = Number(lastNum);
     }
     else
@@ -41,7 +41,7 @@ addBtn.addEventListener("click",function(){
     
     taskDiv.innerHTML = `
     <img src="icon/check.png" class = "check-button" alt="">
-    <div class="task-test" contenteditable = "true"></div>
+    <div class="task-text" contenteditable = "true"></div>
     <img src="icon/clear.png" class = "delete-button" alt="">`;
 
     
@@ -88,7 +88,7 @@ addBtn.addEventListener("click",function(){
 
 
 
-function createTask(task , id, completed)
+function createTask(task , id)
 {
     let taskDiv = document.createElement("div");
     taskDiv.classList.add("task");
@@ -96,7 +96,7 @@ function createTask(task , id, completed)
     
     taskDiv.innerHTML = `
     <img src="icon/check.png" class = "check-button" alt="">
-    <div class="task-test" contenteditable = "true">${task}</div>
+    <div class="task-text" contenteditable = "true">${task}</div>
     <img src="icon/clear.png" class = "delete-button" alt="">`;
 
     
@@ -197,6 +197,8 @@ function addToCompleteList(taskDiv)
 
 completeTab.addEventListener("click",function(){
 
+    allTaskTab.classList.remove("active");
+    completeTab.classList.add("active");
     allTasks.innerHTML=``;
     if (localStorage.getItem("allTask")) {
         taskArr = JSON.parse(localStorage.getItem("allTask"));
@@ -204,14 +206,14 @@ completeTab.addEventListener("click",function(){
         for (let i = 0; i < taskArr.length; i++) {
             let { task, id , completed } = taskArr[i];
             if(completed==true)
-            createCompletedTask(task , id, completed);
+            createCompletedTask(task , id);
         }
     }
     addBtn.style.opacity = 0;
 })
 
 
-function createCompletedTask(task , id, completed)
+function createCompletedTask(task , id)
 {
     
     let taskDiv = document.createElement("div");
@@ -220,7 +222,7 @@ function createCompletedTask(task , id, completed)
     
     taskDiv.innerHTML = `
     
-    <div class="task-test" contenteditable = "false"><span >${task}</span></div>
+    <div class="task-text" contenteditable = "false"><span >${task}</span></div>
     <img src="icon/clear.png" class = "delete-button" alt="">`;
 
     
@@ -241,6 +243,8 @@ function createCompletedTask(task , id, completed)
 
 allTaskTab.addEventListener("click",function(){
 
+    allTaskTab.classList.add("active");
+    completeTab.classList.remove("active");
     allTasks.innerHTML=``;
     addBtn.style.opacity = 1;
     if (localStorage.getItem("allTask")) {
@@ -249,7 +253,7 @@ allTaskTab.addEventListener("click",function(){
         for (let i = 0; i < taskArr.length; i++) {
             let { task, id , completed } = taskArr[i];
             if(completed==false)
-            createTask(task , id, completed);
+            createTask(task , id);
         }
     }
 })
